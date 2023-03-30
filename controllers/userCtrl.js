@@ -107,7 +107,7 @@ const commentCtrl = async (req, res) => {
       output: final,
     };
     results?.push(details);
-    const updatedUser = await user.save();
+    const updatedUser = await user?.save();
     res.send({ message: `${final}` });
     // console.log(final);
   } catch (error) {
@@ -136,7 +136,7 @@ const commentCtrl = async (req, res) => {
 //     output: para,
 //   };
 //   paraphrase?.push(details);
-//   const updatedUser = await user.save();
+//   const updatedUser = await user?.save();
 //   // const s = JSON.stringify(ans);
 //   res.send({ message: `${para}` });
 //   // console.log(para);
@@ -159,7 +159,7 @@ const paraphrasingCtrl = async (req, res) => {
     id:userId, 
   };
   paraphrase?.push(details);
-  const updatedUser = await user.save();
+  const updatedUser = await user?.save();
   res.send({ message: ans }); 
 };
 
