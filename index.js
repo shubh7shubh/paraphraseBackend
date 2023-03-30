@@ -6,7 +6,6 @@ const app = express();
 app.use(express.json());
 const cors = require("cors")
 
-app.use(express.static(path.join(__dirname, "./client/build")));
 
 const corsOpts = {
   origin: '*',
@@ -31,6 +30,6 @@ app.use(require("./routes/router"));
 
 // Start the server
 const PORT = process.env.PORT || 8000;
-app.listen(5000, () => {
-  console.log("Server listening on port 8000");
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
