@@ -15,6 +15,15 @@ app.use(
 const userDetails = async (req, res) => {
   try {
     const { name, email, occupation, found, hope, profileURL } = req.body;
+    const userExist = await userModel.find({ email });
+    if (userExist) {
+      res.status(201).send({
+        success: false,
+        message: "Email already exists",
+        data: userExist,
+      });
+      return;
+    }
     const newUser = new userModel({
       name,
       email,
