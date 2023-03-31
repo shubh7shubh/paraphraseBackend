@@ -13,31 +13,31 @@ app.use(
 );
 // user details controller
 const userDetails = async (req, res) => {
-  try {
+try {
     const { name, email, occupation, found, hope, profileURL } = req.body;
-    const userExist = await userModel.find({ email });
-    if (userExist) {
+    const userExist = await userModel.findOne({ email });
+    if (!userExist) {
+      const newUser = new userModel({
+        name,
+        email,
+        occupation,
+        found,
+        hope,
+        profileURL,
+      });
+      const user = await newUser?.save();
+      res.status(201).send({
+        success: true,
+        message: "Details Saved Successfully",
+        data: user,
+      });
+    } else {
       res.status(201).send({
         success: false,
         message: "Email already exists",
         data: userExist,
       });
-      return;
     }
-    const newUser = new userModel({
-      name,
-      email,
-      occupation,
-      found,
-      hope,
-      profileURL,
-    });
-    await newUser.save();
-    res.status(201).send({
-      success: true,
-      message: "Details Saved Successfully",
-      data: newUser,
-    });
   } catch (error) {
     console.log(error);
     res.status(500).send({
