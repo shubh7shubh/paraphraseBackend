@@ -1,4 +1,5 @@
 const express = require("express");
+const userAuth = require("../middleware/userAuth");
 const {
   getAllUsersCtrl,
   addEmotionCtrl,
@@ -38,9 +39,9 @@ router.get("/getUser/:id", getUserCtrl);
 //copied or not
 router.post("/copied", copiedCtrl);
 //comment generation
-router.post("/comment", commentCtrl);
+router.post("/comment",userAuth, commentCtrl);
 //paraphrasing
-router.post("/paraphrasing", paraphrasingCtrl);
+router.post("/paraphrasing",userAuth, paraphrasingCtrl);
 // logout
 router.get("/logout", logoutCtrl);
 
