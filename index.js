@@ -7,6 +7,7 @@ app.use(express.json());
 const cors = require("cors")
 
 
+
 const corsOpts = {
   origin: '*',
 
@@ -20,7 +21,10 @@ const corsOpts = {
   ],
 };
 
-app.use(cors(corsOpts));
+// app.use(cors(corsOpts));
+app.use(cors({
+    origin: '*'
+}));
 
 
 //mongodb connection
