@@ -14,6 +14,7 @@ const {
   logoutCtrl,
   getUserCtrl,
   copiedCtrl,
+  countUsed
 } = require("../controllers/userCtrl");
 const router = express.Router();
 
@@ -42,6 +43,8 @@ router.post("/copied", copiedCtrl);
 router.post("/comment",userAuth, commentCtrl);
 //paraphrasing
 router.post("/paraphrasing",userAuth, paraphrasingCtrl);
+//get count used
+router.get("/countUsed", countUsed);
 // logout
 router.get("/logout", logoutCtrl);
 
