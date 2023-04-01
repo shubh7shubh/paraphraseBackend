@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const { Configuration, OpenAIApi } = require("openai");
 const session = require("express-session");
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const app = express();
 
 app.use(
