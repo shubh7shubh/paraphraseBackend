@@ -21,6 +21,10 @@ const userSchema = mongoose.Schema({
     type: String,
     require: [true, "hope is required"],
   },
+   countUsed: {
+    type: Number,
+    default: 50,
+  },
   results: [
     {
       emotion: {
