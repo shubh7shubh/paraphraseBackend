@@ -67,7 +67,7 @@ const getUserCtrl = async (req, res) => {
         email: user.email,
         occupation: user.occupation,
         profileURL: user.profileURL,
-        countUsed: user.results.length,
+       countUsed: user.countUsed,
       };
       res.status(200).send({ success: true, data: data });
     } else {
@@ -115,6 +115,8 @@ const commentCtrl = async (req, res) => {
 
     //adding in user database
     const user = await userModel.findOne({ _id: userId });
+     const count = user?.countUsed - 1;
+    user.countUsed = count;
     const results = user?.results;
     const details = {
       emotion: drop,
@@ -168,6 +170,8 @@ const paraphrasingCtrl = async (req, res) => {
   const ans = await generatePara(message);
   // console.log(ans,"answerrrrrr")
   const user = await userModel.findOne({ _id: userId });
+   const count = user?.countUsed - 1;
+    user.countUsed = count;
   const paraphrase = user?.paraphrase;
   const details = {
     textbox: message,
@@ -179,7 +183,26 @@ const paraphrasingCtrl = async (req, res) => {
   res.send({ message: ans }); 
 };
 
-
+//how many times user used website
+// count used
+const countUsed = async (req, res) => {
+  try {
+    const userId = req.bearerId;
+    if (userId) {
+      const user = await userModel.findOne({ _id: userId });
+      res.status(200).send({ success: true, count: user.countUsed });
+    } else {
+      res.status(200).send({ success: false, message: "add userId" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "error in fetching user data",
+      success: false,
+      error,
+    });
+  }
+};
 
 
 
@@ -240,4 +263,5 @@ module.exports = {
   commentCtrl,
   paraphrasingCtrl,
   logoutCtrl,
+  countUsed
 };
