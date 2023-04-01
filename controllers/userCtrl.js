@@ -188,11 +188,13 @@ const paraphrasingCtrl = async (req, res) => {
 const countUsed = async (req, res) => {
   try {
     const userId = req.bearerId;
-    if (userId) {
+    
       const user = await userModel.findOne({ _id: userId });
+    if(user){
       res.status(200).send({ success: true, count: user.countUsed });
-    } else {
-      res.status(200).send({ success: false, message: "add userId" });
+    }
+    else {
+      res.status(200).send({ success: false, message: "user not found" });
     }
   } catch (error) {
     console.log(error);
