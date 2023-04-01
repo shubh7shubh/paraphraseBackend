@@ -26,15 +26,23 @@ try {
         profileURL,
       });
       const user = await newUser?.save();
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "5d",
+      });
       res.status(201).send({
         success: true,
         message: "Details Saved Successfully",
+        token: token,
         data: user,
       });
     } else {
+      const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET, {
+        expiresIn: "5d",
+      });
       res.status(201).send({
         success: false,
         message: "Email already exists",
+        token: token,
         data: userExist,
       });
     }
