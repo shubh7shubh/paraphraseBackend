@@ -41,7 +41,7 @@ try {
         expiresIn: "5d",
       });
       res.status(201).send({
-        success: false,
+        success: true,
         message: "Email already exists",
         token: token,
         data: userExist,
@@ -109,9 +109,7 @@ var final = "";
 const commentCtrl = async (req, res) => {
   try {
     const { data, drop, length } = req.body;
-    const userId=req.body.id;
-    // console.log(req.body,"req body")
-    // const userId = "6415a7678879412fb960809f";
+    const userId = req.bearerId;
     // console.log(JSON.stringify(data));
     const ans = await runCompletion(data, drop, length);
 
@@ -164,7 +162,7 @@ const commentCtrl = async (req, res) => {
 const paraphrasingCtrl = async (req, res) => {
   console.log(req.body,"request");
   const { message } = req.body; 
-  const { userId } = req.body; 
+  const userId = req.bearerId;
   // console.log(message,"message")
   // const userId = "6415a7678879412fb960809f";
   const ans = await generatePara(message);
