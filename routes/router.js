@@ -44,7 +44,7 @@ router.post("/comment",userAuth, commentCtrl);
 //paraphrasing
 router.post("/paraphrasing",userAuth, paraphrasingCtrl);
 //get count used
-router.get("/countUsed", countUsed);
+router.get("/countUsed",userAuth, countUsed);
 // logout
 router.get("/logout", logoutCtrl);
 
