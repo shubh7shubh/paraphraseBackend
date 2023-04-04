@@ -4,28 +4,40 @@ require("dotenv").config();
 const path = require("path");
 const app = express();
 app.use(express.json());
-const cors = require("cors")
+const cors = require("cors");
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-
-// const corsOpts = {
-//   origin: '*',
-
-//   methods: [
-//     'GET',
-//     'POST',
-//   ],
-
-//   allowedHeaders: [
-//     'Content-Type',
-//   ],
-// };
-
-// app.use(cors(corsOpts));
-app.use(cors({
-    origin: '*'
-}));
-
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      frameSrc: ["'self'", "https://silver-clafoutis-a44fda.netlify.app/"],
+      imgSrc: [
+        "'self'",
+        ".licdn.com",
+        ".linkedin.com",
+        ".lynda.com",
+        ".doubleclick.net",
+        ".megaphone.fm",
+        ".omny.fm",
+        ".qualtrics.com",
+        ".sounder.fm",
+      ],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        "https://example.com",
+      ],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+    },
+  })
+);
 
 //mongodb connection
 connectDB();
