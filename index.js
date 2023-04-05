@@ -12,7 +12,7 @@ app.use(
   })
 );
 
-app.use(function(req, res, next) {}
+app.use(function(req, res, next) {
   res.setHeader("content-security-policy-report-only", "default-src 'self'; script-src 'self' 'report-sample'; style-src 'self' 'report-sample'; base-uri 'none'; object-src 'none'; report-uri https://5e52f4c893efcda6a7d40460.endpoint.csper.io")
   next();
 });
