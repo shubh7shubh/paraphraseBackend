@@ -5,7 +5,6 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 const cors = require("cors");
-const helmet = require("helmet");
 
 app.use(
   cors({
@@ -13,32 +12,11 @@ app.use(
   })
 );
 
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      frameSrc: ["'self'", "https://silver-clafoutis-a44fda.netlify.app/"],
-      imgSrc: [
-        "'self'",
-        ".licdn.com",
-        ".linkedin.com",
-        ".lynda.com",
-        ".doubleclick.net",
-        ".megaphone.fm",
-        ".omny.fm",
-        ".qualtrics.com",
-        ".sounder.fm",
-      ],
-      scriptSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "'unsafe-eval'",
-        "https://example.com",
-      ],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-    },
-  })
-);
+app.use(function(req, res, next) {}
+  res.setHeader("content-security-policy-report-only", "default-src 'self'; script-src 'self' 'report-sample'; style-src 'self' 'report-sample'; base-uri 'none'; object-src 'none'; report-uri https://5e52f4c893efcda6a7d40460.endpoint.csper.io")
+  next();
+});
+
 
 //mongodb connection
 connectDB();
