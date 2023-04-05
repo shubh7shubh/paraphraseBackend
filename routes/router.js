@@ -7,6 +7,7 @@ const {
   deleteEmotionCtrl,
   updateEmotionController,
 } = require("../controllers/adminCtrl");
+const { checkout, paymentVerification } = require("../controllers/paymentCtrl");
 const {
   userDetails,
   commentCtrl,
@@ -49,5 +50,9 @@ router.get("/countUsed",userAuth, countUsed);
 router.get("/logout", logoutCtrl);
 
 //........USERS API..........
+//........payment API.......
+router.post("/checkout", checkout);
+router.post("/paymentverification", paymentVerification);
+// .......payment API.......
 
 module.exports = router;
