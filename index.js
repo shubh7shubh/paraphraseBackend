@@ -30,10 +30,9 @@ app.use(
 //   })
 // );
 
-app.use(function(req, res, next) {
-  res.setHeader("content-security-policy-report-only", "frame-src 'self' https://silver-clafoutis-a44fda.netlify.app/ blob: *.licdn.com *.linkedin.com *.lynda.com *.doubleclick.net *.megaphone.fm *.omny.fm *.qualtrics.com *.sounder.fm lichat.azurewebsites.net radar.cedexis.com lnkd.demdex.net cdn.embedly.com www.facebook.com embed.gettyimages.com linkedin.github.io www.linkedin-event.com livestream.com app.powerbi.com msit.powerbi.com w.soundcloud.com embed.ted.com player.vimeo.com www.youtube.com www.youtube-nocookie.com
-")
-  next();
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', "frame-src 'self' https://silver-clafoutis-a44fda.netlify.app/ blob: *.licdn.com *.linkedin.com *.lynda.com *.doubleclick.net *.megaphone.fm *.omny.fm *.qualtrics.com *.sounder.fm lichat.azurewebsites.net radar.cedexis.com lnkd.demdex.net cdn.embedly.com www.facebook.com embed.gettyimages.com linkedin.github.io www.linkedin-event.com livestream.com app.powerbi.com msit.powerbi.com w.soundcloud.com embed.ted.com player.vimeo.com www.youtube.com www.youtube-nocookie.com");
+  next();
 });
 
 
