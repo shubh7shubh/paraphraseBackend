@@ -14,26 +14,26 @@ app.use(
 );
 
 // Set the CSP header using helmet middleware
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'"],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'self'", 'https://api.razorpay.com/']
-    },
-  })
-);
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", "'unsafe-inline'"],
+//       styleSrc: ["'self'", "'unsafe-inline'"],
+//       imgSrc: ["'self'"],
+//       connectSrc: ["'self'"],
+//       fontSrc: ["'self'"],
+//       objectSrc: ["'none'"],
+//       mediaSrc: ["'self'"],
+//       frameSrc: ["'self'", 'https://api.razorpay.com/']
+//     },
+//   })
+// );
 
-// app.use(function(req, res, next) {
-//   res.setHeader("content-security-policy-report-only", "default-src 'self'; script-src 'self' 'report-sample'; style-src 'self' 'report-sample'; base-uri 'none'; object-src 'none'; report-uri https://5e52f4c893efcda6a7d40460.endpoint.csper.io")
-//   next();
-// });
+app.use(function(req, res, next) {
+  res.setHeader("content-security-policy-report-only", "frame-src 'self' blob: *.licdn.com *.linkedin.com *.lynda.com *.doubleclick.net *.megaphone.fm *.omny.fm *.qualtrics.com *.sounder.fm lichat.azurewebsites.net radar.cedexis.com lnkd.demdex.net cdn.embedly.com www.facebook.com embed.gettyimages.com linkedin.github.io www.linkedin-event.com livestream.com app.powerbi.com msit.powerbi.com w.soundcloud.com embed.ted.com player.vimeo.com www.youtube.com www.youtube-nocookie.com https://silver-clafoutis-a44fda.netlify.app/")
+  next();
+});
 
 
 //mongodb connection
