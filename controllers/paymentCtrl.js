@@ -50,7 +50,7 @@ const paymentVerification = async (req, res) => {
   const isAuthentic = expectedSignature === razorpay_signature;
   if (isAuthentic) {
     res.redirect(
-      `http://localhost:3000/paymentsuccess?reference=${razorpay_payment_id}`
+      `https://silver-clafoutis-a44fda.netlify.app/`
     );
   } else {
     res.status(400).send({
