@@ -48,15 +48,19 @@ const paymentVerification = async (req, res) => {
     .digest("hex");
 
   const isAuthentic = expectedSignature === razorpay_signature;
-  if (isAuthentic) {
     res.redirect(
       `https://silver-clafoutis-a44fda.netlify.app/`
-    );
-  } else {
-    res.status(400).send({
-      success: false,
-    });
-  }
+     );
+  
+//   if (isAuthentic) {
+//     res.redirect(
+//       `https://silver-clafoutis-a44fda.netlify.app/`
+//     );
+//   } else {
+//     res.status(400).send({
+//       success: false,
+//     });
+//   }
 };
 
 module.exports = { checkout, paymentVerification };
