@@ -51,8 +51,8 @@ router.get("/logout", logoutCtrl);
 
 //........USERS API..........
 //........payment API.......
-router.post("/checkout", checkout);
-router.post("/paymentverification", paymentVerification);
+router.post("/checkout",userAuth, checkout);
+router.post("/paymentverification",userAuth, paymentVerification);
 // .......payment API.......
 
 module.exports = router;
