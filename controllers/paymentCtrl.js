@@ -13,8 +13,8 @@ const checkout = async (req, res) => {
   };
   const order = await instance?.orders?.create(options);
   try {
-      //const userId = req.bearerId;
-    const userId="6415789655586416d24b045e";
+      const userId = req.bearerId;
+//     const userId="6415789655586416d24b045e";
     if (userId) {
       const user = await userModel.findOne({ _id: userId });
       user.countUsed = user.countUsed + req.body.credit;
