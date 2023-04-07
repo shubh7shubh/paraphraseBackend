@@ -7,14 +7,15 @@ const instance = new Razorpay({
 });
 
 const checkout = async (req, res) => {
-  const options = {
-    amount: Number(req.body.credit * 0.25 * 100), // amount in the smallest currency unit
-    currency: "INR",
-  };
-  const order = await instance?.orders?.create(options);
   try {
-      const userId = req.bearerId;
-//     const userId="6415789655586416d24b045e";
+    const options = {
+      amount: parseInt(req.body.credit) * 0.25 * 100,
+      currency: "INR",
+    };
+    const order = await instance?.orders?.create(options);
+
+    const userId = req.bearerId;
+    // const userId = "6415789655586416d24b045e";
     if (userId) {
       const user = await userModel.findOne({ _id: userId });
       user.countUsed = user.countUsed + req.body.credit;
@@ -22,6 +23,10 @@ const checkout = async (req, res) => {
     } else {
       res.status(200).send({ success: false, message: "add userId" });
     }
+    res.status(200).send({
+      success: true,
+      order: order,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -30,12 +35,7 @@ const checkout = async (req, res) => {
       error,
     });
   }
-  res.status(200).send({
-    success: true,
-    order: order,
-  });
 };
-
 const paymentVerification = async (req, res) => {
   console.log(req.body);
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
