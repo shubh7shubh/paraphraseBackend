@@ -9,7 +9,7 @@ const instance = new Razorpay({
 const checkout = async (req, res) => {
   try {
     const options = {
-      amount: parseInt(req.body.credit) * 0.25 * 100,
+      amount: parseInt(req.body.credit) * 100,
       currency: "INR",
     };
     const order = await instance?.orders?.create(options);
@@ -18,7 +18,7 @@ const checkout = async (req, res) => {
     // const userId = "6415789655586416d24b045e";
     if (userId) {
       const user = await userModel.findOne({ _id: userId });
-      user.countUsed = user.countUsed + req.body.credit;
+      user.countUsed = user.countUsed + parseInt(req.body.credit/0.25);
       await user.save();
     } else {
       res.status(200).send({ success: false, message: "add userId" });
