@@ -3,7 +3,6 @@ const UserModel = require("../models/userModel");
 
 const authCheck = async (req, res, next) => {
   try {
-    console.log(req.headers.authorization);
     if (!req.headers.authorization) throw new Error("Failed to authorize", 401);
     const decoded = await jwt.verify(
       req.headers.authorization.split(" ")[1],
