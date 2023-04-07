@@ -30,10 +30,10 @@ app.use(
 //   })
 // );
 
-// app.use((req, res, next) => {
-//   res.setHeader('Content-Security-Policy', "frame-src 'self' https://silver-clafoutis-a44fda.netlify.app/ blob: *.licdn.com *.linkedin.com *.lynda.com *.doubleclick.net *.megaphone.fm *.omny.fm *.qualtrics.com *.sounder.fm lichat.azurewebsites.net radar.cedexis.com lnkd.demdex.net cdn.embedly.com www.facebook.com embed.gettyimages.com linkedin.github.io www.linkedin-event.com livestream.com app.powerbi.com msit.powerbi.com w.soundcloud.com embed.ted.com player.vimeo.com www.youtube.com www.youtube-nocookie.com");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', "default-src 'self' script-src 'report-sample' 'self' https://platform.linkedin.com/litms/utag/voyager-web-feed/utag.js https://static.licdn.com/sc/h/arstnpc48p729h01vdm9a2nac style-src 'report-sample' 'self' https://static.licdn.com object-src 'none' base-uri 'self' connect-src 'self' https://dms.licdn.com https://media.licdn.com https://static.licdn.com font-src 'self' frame-src 'self' https://commention-backend.onrender.com https://radar.cedexis.com https://silver-clafoutis-a44fda.netlify.app img-src 'self' data: https://media.licdn.com https://px.ads.linkedin.com https://sb.scorecardresearch.com https://static.licdn.com manifest-src 'self media-src 'self' https://dms.licdn.com https://static.licdn.com report-uri https://642fd98b47ec5a345ea1c0ef.endpoint.csper.io/?v=0 worker-src 'none'");
+  next();
+});
 
 
 //mongodb connection
