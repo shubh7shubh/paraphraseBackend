@@ -31,7 +31,7 @@ app.use(
 // );
 
 app.use((req, res, next) => {
-  res.setHeader('Content-Security-Policy-Report-Only', "default-src 'self'; script-src 'report-sample' 'self' https://static.licdn.com/sc/h/arstnpc48p729h01vdm9a2nac; style-src 'report-sample' 'self' https://static.licdn.com; object-src 'none'; base-uri 'self'; connect-src 'self' https://platform.linkedin.com https://static.licdn.com; font-src 'self'; frame-src 'self'; img-src 'self' data: https://media.licdn.com https://sb.scorecardresearch.com https://static.licdn.com; manifest-src 'self'; media-src 'self' https://static.licdn.com; report-uri https://642fe1d7f1e3671a29135bad.endpoint.csper.io/?v=0; worker-src 'none';");
+  res.setHeader('Content-Security-Policy-Report-Only', "default-src 'self'; script-src 'report-sample' 'self'; style-src 'report-sample' 'self'; object-src 'none'; base-uri 'self'; connect-src 'self'; font-src 'self'; frame-src 'self'; img-src 'self'; manifest-src 'self'; media-src 'self'; report-uri https://642fe34f47ec5a345ea1c0fe.endpoint.csper.io/?v=0; worker-src 'none';");
   next();
 });
 
