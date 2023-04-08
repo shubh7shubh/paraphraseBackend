@@ -5,13 +5,13 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const app = express();
 
-app.use(
-  session({
-    secret: "0Y8Yh7t1g1XqyMRc",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+// app.use(
+//   session({
+//     secret: "0Y8Yh7t1g1XqyMRc",
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// );
 // user details controller
 const userDetails = async (req, res) => {
 try {
