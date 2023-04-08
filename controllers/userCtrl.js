@@ -188,8 +188,6 @@ const paraphrasingCtrl = async (req, res) => {
 const countUsed = async (req, res) => {
   try {
     const userId = req.bearerId;
-      res.setHeader('Content-Security-Policy', "connect-src 'self' https://lnkd.demdex.net https://media.licdn.com https://platform.linkedin.com https://static.licdn.com https://commention-backend.onrender.com");
-
     
       const user = await userModel.findOne({ _id: userId });
     if(user){
