@@ -30,6 +30,21 @@ app.use(
 //   })
 // );
 
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", 'https://silver-clafoutis-a44fda.netlify.app/'],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: true
+    }
+}));
+
+app.use(helmet.hsts({
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+}));
+
 // app.use((req, res, next) => {
 //   res.setHeader('Content-Security-Policy-Report-Only', "default-src 'self'; script-src 'report-sample' 'self'; style-src 'report-sample' 'self'; object-src 'none'; base-uri 'self'; connect-src 'self'; font-src 'self'; frame-src 'self'; img-src 'self'; manifest-src 'self'; media-src 'self'; report-uri https://642fe34f47ec5a345ea1c0fe.endpoint.csper.io/?v=0; worker-src 'none';");
 //   next();
