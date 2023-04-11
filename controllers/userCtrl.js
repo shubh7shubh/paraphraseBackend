@@ -14,8 +14,8 @@ const app = express();
 // );
 // user details controller
 const userDetails = async (req, res) => {
-try {
-    const { name, email, occupation, found, hope, profileURL } = req.body;
+  try {
+    const { name, email, occupation, found, referral, hope } = req.body;
     const userExist = await userModel.findOne({ email });
     if (!userExist) {
       const newUser = new userModel({
@@ -24,12 +24,23 @@ try {
         occupation,
         found,
         hope,
-        profileURL,
       });
       const user = await newUser?.save();
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "5d",
       });
+      if (referral) {
+        const userRef = await userModel.findOne({ _id: referral });
+        if (userRef) {
+          const count = userRef?.countUsed + 50;
+          userRef.countUsed = count;
+          await userRef?.save();
+
+          const count2 = user?.countUsed + 25;
+          user.countUsed = count2;
+          await user?.save();
+        }
+      }
       res.status(201).send({
         success: true,
         message: "Details Saved Successfully",
