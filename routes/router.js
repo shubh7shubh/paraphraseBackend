@@ -12,6 +12,8 @@ const {
   userDetails,
   commentCtrl,
   paraphrasingCtrl,
+  regenerateCommentCtrl,
+  regenerateParaCtrl,
   logoutCtrl,
   getUserCtrl,
   copiedCtrl,
