@@ -94,6 +94,21 @@ const getUserCtrl = async (req, res) => {
   }
 };
 
+//get user id controller
+const getCurrentUserCtrl = async () => {
+  try {
+    const userId = req.bearerId;
+    res.status(201).send({ success: true, id: userId });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "error in fetching user",
+      success: false,
+      error,
+    });
+  }
+};
+
 // is copied or not Ctrl
 const copiedCtrl = async (req, res) => {
   try {
@@ -328,5 +343,6 @@ module.exports = {
   regenerateCommentCtrl,
   regenerateParaCtrl,
   logoutCtrl,
-  countUsed
+  countUsed,
+  getCurrentUserCtrl,
 };
