@@ -219,11 +219,11 @@ const regenerateCommentCtrl = async (req, res) => {
 var para = "";
 const regenerateParaCtrl = async (req, res) => {
   try {
-    const { data, drop, length } = req.body;
+    const { message} = req.body;
     const userId = req.bearerId;
 //     const userId = "6427ec5cd6a574855196a742";
     // console.log(JSON.stringify(data));
-    const ans = await regeneratePara(data, drop, length);
+    const ans = await regeneratePara(message);
     res.send({ message: `${para}` });
     // console.log(final);
   } catch (error) {
