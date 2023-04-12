@@ -95,7 +95,7 @@ const getUserCtrl = async (req, res) => {
 };
 
 //get user id controller
-const getCurrentUserCtrl = async () => {
+const getCurrentUserCtrl = async (req, res) => {
   try {
     const userId = req.bearerId;
     res.status(201).send({ success: true, id: userId });
