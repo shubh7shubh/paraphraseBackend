@@ -17,7 +17,8 @@ const {
   logoutCtrl,
   getUserCtrl,
   copiedCtrl,
-  countUsed
+  countUsed,
+  getCurrentUserCtrl,
 } = require("../controllers/userCtrl");
 const router = express.Router();
 
@@ -40,6 +41,8 @@ router.put("/admin/updateEmotion", updateEmotionController);
 router.post("/user-details", userDetails);
 //get user Detail by id
 router.get("/getUser/:id", getUserCtrl);
+//get Current Logged in user
+router.get("/getCurrentUser", userAuth, getCurrentUserCtrl);
 //copied or not
 router.post("/copied", copiedCtrl);
 //comment generation
