@@ -44,6 +44,10 @@ router.post("/copied", copiedCtrl);
 router.post("/comment",userAuth, commentCtrl);
 //paraphrasing
 router.post("/paraphrasing",userAuth, paraphrasingCtrl);
+//regenerate comment
+router.post("/regenerateComment",userAuth, regenerateCommentCtrl);
+//regenerate paraphrasing
+router.post("/regeneratePara",userAuth, regenerateParaCtrl);
 //get count used
 router.get("/countUsed",userAuth, countUsed);
 // logout
