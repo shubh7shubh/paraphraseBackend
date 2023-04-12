@@ -148,30 +148,7 @@ const commentCtrl = async (req, res) => {
     });
   }
 };
-
-// //paraphrasing controller
-// var para = "";
-// const paraphrasingCtrl = async (req, res) => {
-//   const { data } = req.body;
-//   // const userId=req.body.userId;
-//   const userId = "6415a7678879412fb960809f";
-//   // console.log(JSON.stringify(data));
-//   const ans = await generatePara(data);
-//   //adding in user database
-//   const user = await userModel.findOne({ _id: userId });
-//   const paraphrase = user?.paraphrase;
-//   const details = {
-//     textbox: data,
-//     output: para,
-//   };
-//   paraphrase?.push(details);
-//   const updatedUser = await user?.save();
-//   // const s = JSON.stringify(ans);
-//   res.send({ message: `${para}` });
-//   // console.log(para);
-// };
-
-
+//paraphrasing controller
 const paraphrasingCtrl = async (req, res) => {
   console.log(req.body,"request");
   const { message } = req.body; 
@@ -217,6 +194,47 @@ const countUsed = async (req, res) => {
   }
 };
 
+//regenerate comment
+var final = "";
+const regenerateCommentCtrl = async (req, res) => {
+  try {
+    const { data, drop, length } = req.body;
+    const userId = req.bearerId;
+//     const userId = "6427ec5cd6a574855196a742";
+    // console.log(JSON.stringify(data));
+    const ans = await regenerateComment(data, drop, length);
+    res.send({ message: `${final}` });
+    // console.log(final);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "error in comment regenerating",
+      success: false,
+      error,
+    });
+  }
+};
+
+//regenerate paraphrasing
+var para = "";
+const regenerateParaCtrl = async (req, res) => {
+  try {
+    const { data, drop, length } = req.body;
+    const userId = req.bearerId;
+//     const userId = "6427ec5cd6a574855196a742";
+    // console.log(JSON.stringify(data));
+    const ans = await regeneratePara(data, drop, length);
+    res.send({ message: `${para}` });
+    // console.log(final);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "error in comment regenerating",
+      success: false,
+      error,
+    });
+  }
+};
 
 
 //logout controller
@@ -266,7 +284,39 @@ async function generatePara(data) {
   para = response.data.choices[0].text.trim();
     // return { s };
   return para;
+}
 
+//commment regenerate
+async function regenerateComment(data, drop, length) {
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `" ${data}"
+        Reegenerate ${drop} comment in ${length} words`,
+    temperature: 0.7,
+    max_tokens: 256,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+  });
+  final = response.data.choices[0].text.trim();
+}
+
+//regenerate praphrase
+async function regeneratePara(data) {
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `" ${data}"
+        Regenerate paraphrasing content for these paragraph`,
+    temperature: 0.7,
+    max_tokens: 256,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+  });
+  // console.log(response.data.choices[0].text);
+  para = response.data.choices[0].text.trim();
+  return para;
+  // return { s };
 }
 
 module.exports = {
@@ -275,6 +325,8 @@ module.exports = {
   copiedCtrl,
   commentCtrl,
   paraphrasingCtrl,
+  regenerateCommentCtrl,
+  regenerateParaCtrl,
   logoutCtrl,
   countUsed
 };
