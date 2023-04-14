@@ -47,10 +47,10 @@ const paymentVerification = async (req, res) => {
     .update(body.toString())
     .digest("hex");
 
-  const isAuthentic = expectedSignature === razorpay_signature;
-    res.redirect(
-      `https://silver-clafoutis-a44fda.netlify.app/`
-     );
+//   const isAuthentic = expectedSignature === razorpay_signature;
+//     res.redirect(
+//       `https://silver-clafoutis-a44fda.netlify.app/`
+//      );
   
 //   if (isAuthentic) {
 //     res.redirect(
