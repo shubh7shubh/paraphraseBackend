@@ -46,7 +46,7 @@ const paymentVerification = async (req, res) => {
     .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
     .update(body.toString())
     .digest("hex");
-// res.send({success: true});
+res.send({success: true});
 //   const isAuthentic = expectedSignature === razorpay_signature;
 //     res.redirect(
 //       `https://silver-clafoutis-a44fda.netlify.app/`
