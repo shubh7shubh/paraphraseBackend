@@ -26,9 +26,7 @@ const userDetails = async (req, res) => {
         hope,
       });
       const user = await newUser?.save();
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "5d",
-      });
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       if (referral) {
         const userRef = await userModel.findOne({ _id: referral });
         if (userRef) {
