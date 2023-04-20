@@ -21,6 +21,10 @@ const userSchema = mongoose.Schema({
     type: String,
     require: [true, "hope is required"],
   },
+  countUsed: {
+    type: Number,
+    default: 50,
+  },
   results: [
     {
       emotion: {
@@ -39,6 +43,10 @@ const userSchema = mongoose.Schema({
       output: {
         type: String,
       },
+      time: {
+        type: String,
+        default: Date,
+      },
     },
   ],
   paraphrase: [
@@ -48,6 +56,10 @@ const userSchema = mongoose.Schema({
       },
       output: {
         type: String,
+      },
+      time: {
+        type: String,
+        default: Date,
       },
     },
   ],

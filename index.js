@@ -3,25 +3,25 @@ const connectDB = require("./config/db");
 require("dotenv").config();
 const path = require("path");
 const app = express();
+const helmet = require('helmet');
 app.use(express.json());
-const cors = require("cors")
+const cors = require("cors");
 
-app.use(express.static(path.join(__dirname, "./client/build")));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-const corsOpts = {
-  origin: '*',
 
-  methods: [
-    'GET',
-    'POST',
-  ],
-
-  allowedHeaders: [
-    'Content-Type',
-  ],
-};
-
-app.use(cors(corsOpts));
+// app.use((req, res, next) => {
+//   res.setHeader('Content-Security-Policy-Report-Only', "base-uri 'self'; connect-src 'self' https://dms.licdn.com https://media.licdn.com https://static.licdn.com; default-src 'self'; font-src 'self'; frame-src 'self' https://media.licdn.com https://radar.cedexis.com; img-src 'self' data: https://media.licdn.com https://px.ads.linkedin.com https://sb.scorecardresearch.com https://static.licdn.com; manifest-src 'self'; media-src 'self' https://dms.licdn.com https://static.licdn.com; object-src 'none'; report-uri https://6431062547ec5a345ea1c212.endpoint.csper.io/; script-src 'report-sample' 'self' https://platform.linkedin.com/litms/utag/voyager-web-feed/utag.js https://static.licdn.com/sc/h/arstnpc48p729h01vdm9a2nac; style-src 'report-sample' 'self' https://static.licdn.com; worker-src 'none';");
+//   next();
+// });
+app.use((req, res, next) => {
+  res.setHeader('content-security-policy-report-only', "default-src 'self'; script-src 'report-sample' 'self' https://platform.linkedin.com/litms/utag/voyager-web-feed/utag.js https://static.licdn.com/sc/h/arstnpc48p729h01vdm9a2nac; style-src 'report-sample' 'self' https://static.licdn.com; object-src 'none'; base-uri 'self'; connect-src 'self' https://media.licdn.com https://static.licdn.com; font-src 'self'; frame-src 'self' https://commention-backend.onrender.com https://radar.cedexis.com https://silver-clafoutis-a44fda.netlify.app; img-src 'self' data: https://media.licdn.com https://px.ads.linkedin.com https://sb.scorecardresearch.com https://static.licdn.com; manifest-src 'self'; media-src 'self' https://static.licdn.com; report-uri https://64314b2d47ec5a345ea1c26a.endpoint.csper.io/?v=2; worker-src 'none';");
+  next();
+});
 
 
 //mongodb connection
@@ -31,6 +31,6 @@ app.use(require("./routes/router"));
 
 // Start the server
 const PORT = process.env.PORT || 8000;
-app.listen(5000, () => {
-  console.log("Server listening on port 8000");
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
