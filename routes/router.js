@@ -20,6 +20,7 @@ const {
   countUsed,
   getCurrentUserCtrl,
 } = require("../controllers/userCtrl");
+const { chatHandle, getAllChats } = require("../controllers/chatCtrl");
 const router = express.Router();
 
 // ......ADMIN API......
@@ -46,22 +47,31 @@ router.get("/getCurrentUser", userAuth, getCurrentUserCtrl);
 //copied or not
 router.post("/copied", copiedCtrl);
 //comment generation
-router.post("/comment",userAuth, commentCtrl);
+router.post("/comment", userAuth, commentCtrl);
 //paraphrasing
-router.post("/paraphrasing",userAuth, paraphrasingCtrl);
+router.post("/paraphrasing", userAuth, paraphrasingCtrl);
 //regenerate comment
-router.post("/regenerateComment",userAuth, regenerateCommentCtrl);
+router.post("/regenerateComment", userAuth, regenerateCommentCtrl);
 //regenerate paraphrasing
-router.post("/regeneratePara",userAuth, regenerateParaCtrl);
+router.post("/regeneratePara", userAuth, regenerateParaCtrl);
 //get count used
-router.get("/countUsed",userAuth, countUsed);
+router.get("/countUsed", userAuth, countUsed);
 // logout
 router.get("/logout", logoutCtrl);
 
 //........USERS API..........
 //........payment API.......
-router.post("/checkout",userAuth,checkout);
-router.post("/paymentverification",paymentVerification);
+router.post("/checkout", userAuth, checkout);
+router.post("/paymentverification", paymentVerification);
 // .......payment API.......
+
+//CHAT API.......
+router.post("/chat", userAuth, chatHandle);
+router.get(
+  "/getAllChats",
+   userAuth,
+  getAllChats
+);
+// CHAT API......
 
 module.exports = router;

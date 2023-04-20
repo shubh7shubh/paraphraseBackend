@@ -26,7 +26,9 @@ const userDetails = async (req, res) => {
         hope,
       });
       const user = await newUser?.save();
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "5d",
+      });
       if (referral) {
         const userRef = await userModel.findOne({ _id: referral });
         if (userRef) {
@@ -46,9 +48,7 @@ const userDetails = async (req, res) => {
         data: user,
       });
     } else {
-      const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET, {
-        expiresIn: "5d",
-      });
+      const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET);
       res.status(201).send({
         success: true,
         message: "Email already exists",
@@ -76,7 +76,7 @@ const getUserCtrl = async (req, res) => {
         email: user.email,
         occupation: user.occupation,
         profileURL: user.profileURL,
-       countUsed: user.countUsed,
+        countUsed: user.countUsed,
       };
       res.status(200).send({ success: true, data: data });
     } else {
@@ -111,7 +111,7 @@ const getCurrentUserCtrl = async (req, res) => {
 const copiedCtrl = async (req, res) => {
   try {
     // console.log(req,"eeeeeeeeeeeeeeeeeeeeeeee")
-    console.log(res,"fffffffffffffffffffffff")
+    console.log(res, "fffffffffffffffffffffff");
     // const { commentId } = req.body;
     const commentId = "64229e80f6ed2dc103338bd0";
     const user = await userModel.updateOne(
@@ -128,19 +128,23 @@ const copiedCtrl = async (req, res) => {
     });
   }
 };
+
 //comment controller
 var final = "";
 const commentCtrl = async (req, res) => {
   try {
     const { data, drop, length } = req.body;
     const userId = req.bearerId;
+    // const userId = "6440d8b0e2a9c5366ab8f718";
     // console.log(JSON.stringify(data));
     const ans = await runCompletion(data, drop, length);
 
     //adding in user database
     const user = await userModel.findOne({ _id: userId });
-     const count = user?.countUsed - 1;
-    user.countUsed = count;
+    const count = user?.countUsed - 1;
+    if (user.countUsed != null) {
+      user.countUsed = count;
+    }
     const results = user?.results;
     const details = {
       emotion: drop,
@@ -149,7 +153,7 @@ const commentCtrl = async (req, res) => {
       output: final,
     };
     results?.push(details);
-    const updatedUser = await user?.save();
+    const updatedUser = await user.save();
     res.send({ message: `${final}` });
     // console.log(final);
   } catch (error) {
@@ -161,27 +165,29 @@ const commentCtrl = async (req, res) => {
     });
   }
 };
+
 //paraphrasing controller
+var para = "";
 const paraphrasingCtrl = async (req, res) => {
-  console.log(req.body,"request");
-  const { message } = req.body; 
+  const { message } = req.body;
   const userId = req.bearerId;
-  // console.log(message,"message")
-  // const userId = "6415a7678879412fb960809f";
+  // const userId = "6440d659a45812f296475d40";
+  // console.log(JSON.stringify(data));
   const ans = await generatePara(message);
-  // console.log(ans,"answerrrrrr")
+  //adding in user database
   const user = await userModel.findOne({ _id: userId });
-   const count = user?.countUsed - 1;
-    user.countUsed = count;
+  const count = user?.countUsed - 1;
+  user.countUsed = count;
   const paraphrase = user?.paraphrase;
   const details = {
     textbox: message,
-    output: ans,
-    id:userId, 
+    output: para,
   };
   paraphrase?.push(details);
-  const updatedUser = await user?.save();
-  res.send({ message: ans }); 
+  const updatedUser = await user.save();
+  // const s = JSON.stringify(ans);
+  res.send({ message: ans });
+  // console.log(para);
 };
 
 //how many times user used website
@@ -189,12 +195,11 @@ const paraphrasingCtrl = async (req, res) => {
 const countUsed = async (req, res) => {
   try {
     const userId = req.bearerId;
-    
-      const user = await userModel.findOne({ _id: userId });
-    if(user){
+
+    const user = await userModel.findOne({ _id: userId });
+    if (user) {
       res.status(200).send({ success: true, count: user.countUsed });
-    }
-    else {
+    } else {
       res.status(200).send({ success: false, message: "user not found" });
     }
   } catch (error) {
@@ -213,7 +218,7 @@ const regenerateCommentCtrl = async (req, res) => {
   try {
     const { data, drop, length } = req.body;
     const userId = req.bearerId;
-//     const userId = "6427ec5cd6a574855196a742";
+    //     const userId = "6427ec5cd6a574855196a742";
     // console.log(JSON.stringify(data));
     const ans = await regenerateComment(data, drop, length);
     res.send({ message: `${final}` });
@@ -232,9 +237,9 @@ const regenerateCommentCtrl = async (req, res) => {
 var para = "";
 const regenerateParaCtrl = async (req, res) => {
   try {
-    const { message} = req.body;
+    const { message } = req.body;
     const userId = req.bearerId;
-//     const userId = "6427ec5cd6a574855196a742";
+    //     const userId = "6427ec5cd6a574855196a742";
     // console.log(JSON.stringify(data));
     const ans = await regeneratePara(message);
     res.send({ message: `${para}` });
@@ -248,7 +253,6 @@ const regenerateParaCtrl = async (req, res) => {
     });
   }
 };
-
 
 //logout controller
 const logoutCtrl = async (req, res) => {
@@ -267,67 +271,82 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+//comment generate
 async function runCompletion(data, drop, length) {
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `" ${data}"
-        Create ${drop} comment in ${length} words`,
-    temperature: 0.7,
-    max_tokens: 256,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
   });
-  final = response.data.choices[0].text.trim();
-}
+  const openai = new OpenAIApi(configuration);
 
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: `${data}. Create ${drop} comment in ${length} words`,
+      },
+    ],
+  });
+  final = completion.data.choices[0].message.content;
+  // final = response.data.choices[0].text.trim();
+}
 //AI model for paraphrasing
 async function generatePara(data) {
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `" ${data}"
-        Create paraphrasing content for these paragraph`,
-    temperature: 0.7,
-    max_tokens: 256,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
   });
-  // console.log(response.data.choices[0].text);
-  para = response.data.choices[0].text.trim();
-    // return { s };
+  const openai = new OpenAIApi(configuration);
+
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: `"${data}." Regenerate paraphrasing content for these paragraph`,
+      },
+    ],
+  });
+  para = completion.data.choices[0].message.content;
   return para;
+  // return { s };
 }
 
 //commment regenerate
 async function regenerateComment(data, drop, length) {
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `" ${data}"
-        Reegenerate ${drop} comment in ${length} words`,
-    temperature: 0.7,
-    max_tokens: 256,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
   });
-  final = response.data.choices[0].text.trim();
+  const openai = new OpenAIApi(configuration);
+
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: `${data}. Create ${drop} comment in ${length} words`,
+      },
+    ],
+  });
+  final = completion.data.choices[0].message.content;
 }
 
 //regenerate praphrase
 async function regeneratePara(data) {
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `" ${data}"
-        Regenerate paraphrasing content for these paragraph`,
-    temperature: 0.7,
-    max_tokens: 256,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
   });
-  // console.log(response.data.choices[0].text);
-  para = response.data.choices[0].text.trim();
+  const openai = new OpenAIApi(configuration);
+
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: `"${data}." Regenerate paraphrasing content for these paragraph`,
+      },
+    ],
+  });
+  para = completion.data.choices[0].message.content;
   return para;
   // return { s };
 }
